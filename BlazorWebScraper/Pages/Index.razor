@@ -1,0 +1,78 @@
+﻿@page "/"
+@using BlazorWebScraper.Data
+@inject ScrapperService Scraper
+
+<h1>Scraped Local Restaurant Favorites Data</h1>
+
+
+@if (RestaurantListData == null)
+{
+    <div class="ring-2">
+        <div class="ball-holder">
+            <div class="ball"></div>
+        </div>
+    </div>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Restaurant</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in RestaurantListData)
+            {
+                <tr>
+                    <td>@data.ToString()</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h1>Scraped Local Cafe Favorites Data</h1>
+
+
+@if (CafeListData == null)
+{
+    <div class="ring-2">
+        <div class="ball-holder">
+            <div class="ball"></div>
+        </div>
+    </div>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Cafe</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in CafeListData)
+            {
+                <tr>
+                    <td>@data.ToString()</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+@code{
+    public List<string> RestaurantListData;
+    public List<string> CafeListData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        RestaurantListData = await Scraper.TakeOutScrapping();
+        CafeListData = await Scraper.CafeScrapping();
+    }
+}
